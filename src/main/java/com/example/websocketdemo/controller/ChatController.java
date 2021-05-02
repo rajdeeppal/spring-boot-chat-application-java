@@ -88,10 +88,11 @@ public class ChatController {
     	}
     
 		userEmail U = userEmailRepo.findByName(chatMessage.getSender());
+		HostDetails hdetails = hostRepo.findByName(chatMessage.getSender());
     	//set the meeting name 
     	if(message.contains(setTitle)) {
-    			if(U == null ) {
-    				chatMessage.setContent("invalid credential !! register your email !!");
+    			if(hdetails == null ) {
+    				chatMessage.setContent("you are not host !!");
     			}
     			else {
             		int i = message.indexOf('#');
@@ -133,8 +134,8 @@ public class ChatController {
     	
     	// change the meeting name 
     	else if(message.contains(changeTitle)) {
-			if(U == null ) {
-				chatMessage.setContent("invalid credential !! register your email !!");
+			if(hdetails == null ) {
+				chatMessage.setContent("you are not host !!");
 				flag = true;
 			}
 			
@@ -519,6 +520,12 @@ public class ChatController {
     				chatUserInfo.setName(chatMessage.getSender());
     				chatUserInfo.setName(chatMessage.getSender());
     				userInfoRepo.save(chatUserInfo);
+    				// make first newly register person automatically host 
+    				if(userInfoRepo.count()==1) {
+    					hostDetails.setName(chatMessage.getSender());
+    					hostDetails.setHostEmail(s);
+    					hostRepo.save(hostDetails);
+    				}
     			}
     		}
     		flag = true ;
@@ -540,7 +547,8 @@ public class ChatController {
     		if(hstDetails != null ) {
     		hostRepo.deleteAll();
     		userInfoRepo.deleteAll();
-    		lastActiveUserRepo.deleteAll();
+    		chatMessage.setContent("Meeting ended every one can leave !!");
+//    		lastActiveUserRepo.deleteAll();
     		}
     		else 
     			chatMessage.setContent("You are not host!!");

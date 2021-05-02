@@ -1,10 +1,15 @@
 package com.example.websocketdemo.controller;
 
+import com.example.websocketdemo.dao.ChatUserRepo;
+import com.example.websocketdemo.dao.emails.UserEmailRepo;
 import com.example.websocketdemo.dao.host.HostRepo;
 import com.example.websocketdemo.dao.user.UserInfoRepo;
 import com.example.websocketdemo.model.ChatMessage;
 import com.example.websocketdemo.model.chatUser.ChatUserInfo;
+import com.example.websocketdemo.model.email.userEmail;
 import com.example.websocketdemo.model.host.HostDetails;
+
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,11 +31,17 @@ public class WebSocketEventListener {
 	
 	@Autowired
 	HostRepo hostRepo;
+	
+	
+	@Autowired
+	UserEmailRepo userEmailRepo;
+	
     private static final Logger logger = LoggerFactory.getLogger(WebSocketEventListener.class);
 
     @Autowired
     private SimpMessageSendingOperations messagingTemplate;
 
+    
     @EventListener
     public void handleWebSocketConnectListener(SessionConnectedEvent event) {
         logger.info("Received a new web socket connection");
@@ -46,11 +57,20 @@ public class WebSocketEventListener {
             logger.info("User Disconnected : " + username);
             //new added
             ChatUserInfo chatUserInfo = userInfoRepo.findByName(username);
-            userInfoRepo.delete(chatUserInfo);
-            
-//            HostDetails hostDetails = hostRepo.findByName(username);
-//            if(hostDetails!= null)
-//            	hostRepo.delete(hostDetails);
+            if(chatUserInfo != null)
+            	userInfoRepo.delete(chatUserInfo);          
+            HostDetails hostDetails = hostRepo.findByName(username);
+            if(hostDetails!= null) {
+            	hostRepo.delete(hostDetails);
+            if(userInfoRepo.count()>=1) {
+            	List<ChatUserInfo>  u = userInfoRepo.findAll();
+            	ChatUserInfo cui = u.get(0);
+            	userEmail ue = userEmailRepo.findByName(cui.getName());
+            	hostDetails.setName(ue.getName());
+            	hostDetails.setHostEmail(ue.getEmailID());
+            	hostRepo.save(hostDetails);
+            }
+            }
             ChatMessage chatMessage = new ChatMessage();
             chatMessage.setType(ChatMessage.MessageType.LEAVE);
             chatMessage.setSender(username);
