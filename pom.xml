@@ -45,17 +45,17 @@
 		</dependency>
 		
 		<!-- comment for hiroku mysql -->
-		<!-- <dependency>
+		<dependency>
 		    <groupId>mysql</groupId>
 		    <artifactId>mysql-connector-java</artifactId>
 			<scope>runtime</scope>
-		</dependency>-->
+		</dependency>
 		<!-- https://mvnrepository.com/artifact/org.postgresql/postgresql -->
-		<dependency>
+		<!--<dependency>
     		<groupId>org.postgresql</groupId>
     		<artifactId>postgresql</artifactId>
     		<scope>runtime</scope>
-		</dependency>
+		</dependency>-->
 		
 		
 		<!-- Following dependency is required for Full Featured STOMP Broker Relay -->
