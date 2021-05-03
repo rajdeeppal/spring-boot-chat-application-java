@@ -16,6 +16,8 @@ bash
 git clone https://github.com/rajdeeppal/spring-boot-chat-application-java.git
 
 ##Features added
+
+
 **You can perform many automated feature like mail service using simple commands**
 1. Automatically assign ‘Host’ to that register person who started the session first, and assign ‘Anonymous’  to that person who is not a register user, in order to register yourself you need to enter your email id in the chat box any time.
 
