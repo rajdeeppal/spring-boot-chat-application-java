@@ -15,18 +15,6 @@
 bash
 git clone https://github.com/rajdeeppal/spring-boot-chat-application-java.git
 
-**2. Build and run the app using maven**
-
-bash
-cd spring-boot-websocket-chat-demo
-mvn package
-java -jar target/websocket-demo-0.0.1-SNAPSHOT.jar
-
-**3. Alternatively, you can run the app directly without packaging it like so - **
-
-bash
-mvn spring-boot:run
-
 ##Features added
 **You can perform many automated feature like mail service using simple commands**
 1. Automatically assign ‘Host’ to that register person who started the session first, and assign ‘Anonymous’  to that person who is not a register user, in order to register yourself you need to enter your email id in the chat box any time.
